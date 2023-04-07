@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles/styles.css" />
+</head>
+<body>
+    <div id="gameStart">
+        <h1> The Grand Toilet Paper Tower</h1>
+        <div class="textBoxes">
+            <a>You and you friends are having the most amazing toilet paper roll stacking contest! Your goal is simple: catch and stack as many rolls as you you can by catching them with your A and D! But be aware, they coming flying at you from faster than you think. If you miss a roll, you will lose.  You win the game by climbing the leadership board to the top.
+            </a>
+            <div class="scoreBoard">
+                <ul>
+                    <li>Test</li>
+                    <li>Test</li>
+                    <li>Test</li>
+                    <li>Test</li>
+                    <li>Test</li>
+                </ul>                        
+            </div>
+        </div>
+
+        <div id="nameInput">
+            <h2>Almost there, just need your name!</h2>
+            
+            <form>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name">
+                <input type="button" id="start-button" value="Start Stackin'!">
+            </form>
+        </div>
+
+    </div>
+
+    <div id="game-board">
+        <canvas id="canvas" width="500" height="600"></canvas>
+    </div>
+
+    <div id="gameOver">
+        
+        <h2>Oh shiiet! You've lost!</h2>
+        
+        <h3>Your Score: 0</h3>
+
+        <div id="buttonCollection">
+            <button>Restart Game</button>
+            <button>Return Home</button>
+        </div>
+
+
+
+    </div>
+
+
+    <script src="../js/index.js" ></script>
+
+
+</body>
+</html>
