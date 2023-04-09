@@ -17,6 +17,9 @@ window.addEventListener('load', () => {
     let rollY = canvas.height - rollHeight + 10
 
 
+    let playerName = ""
+
+
 
     let isMovingLeft = false
     let isMovingRight = false
@@ -42,12 +45,9 @@ window.addEventListener('load', () => {
 
         if (isMovingLeft && rollX !== 0) {
             rollX -= 1.5
-
-            console.log(rollX)
-            console.log(rollY)
-          } else if (isMovingRight && rollX != (canvas.width - rollWidgth)) {
+        } else if (isMovingRight && rollX != (canvas.width - rollWidgth)) {
             rollX += 1.5
-          }
+        }
 
 
 
@@ -83,7 +83,19 @@ window.addEventListener('load', () => {
     // Event listeners 
 
     document.getElementById('start-button').addEventListener('click', () => {
-        startGame()
+
+        let nameInput = document.getElementById("name").value
+        if (nameInput === "") {
+          let h2 = document.querySelector('#nameInput h2')
+          h2.innerText = "You forgot to enter your name....."
+          
+
+        } else {
+          playerName = nameInput
+          startGame()
+        }
+
+        
     })
 
 
@@ -113,6 +125,7 @@ window.addEventListener('load', () => {
     })
 
 })
+
 
 
 
