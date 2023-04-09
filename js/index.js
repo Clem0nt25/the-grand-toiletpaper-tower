@@ -16,19 +16,59 @@ window.addEventListener('load', () => {
     let rollX = canvas.width / 2 - rollWidgth / 2
     let rollY = canvas.height - rollHeight + 10
 
-
     let playerName = ""
-
-
+    let score = 0
 
     let isMovingLeft = false
     let isMovingRight = false
     let gameStatus = false
 
-
     gameBoard.style.display = 'none'
     gameOver.style.display = 'none'
 
+    //  dhdhdhd
+
+    class Obstacle {
+      constructor() {
+        this.width = 50;
+        this.height = 60;
+        this.x = Math.random() * (canvas.width - this.width);
+        this.y = 0 - this.height;
+        this.speed = Math.random() * 2 + 2; // Random speed between 2 and 4 pixels per frame
+        this.color = '#FF0000';
+      }
+    
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+      }
+    
+      update() {
+        this.y += this.speed;
+      }
+    }
+
+    let obstacles = [];
+
+    const addObstacle = () => {
+      const obstacle = new Obstacle();
+      obstacles.push(obstacle);
+    };
+
+
+    setInterval(addObstacle, 2000); // Add a new obstacle every 2 seconds
+
+    const drawObstacles = () => {
+      obstacles.forEach(obstacle => {
+        obstacle.draw();
+      });
+    };
+
+    const updateObstacles = () => {
+      obstacles.forEach(obstacle => {
+        obstacle.update();
+      });
+    };
 
     const drawRoll = () => {
         ctx.beginPath()
@@ -36,6 +76,9 @@ window.addEventListener('load', () => {
         ctx.fill()
         ctx.closePath()
     }
+
+
+
 
 
     const animate = () => {
@@ -50,11 +93,9 @@ window.addEventListener('load', () => {
         }
 
 
-
-
-
-
-
+        drawObstacles();
+        updateObstacles();
+        
         requestAnimationFrame(animate)
     }
 
@@ -87,14 +128,13 @@ window.addEventListener('load', () => {
         let nameInput = document.getElementById("name").value
         if (nameInput === "") {
           let h2 = document.querySelector('#nameInput h2')
-          h2.innerText = "You forgot to enter your name....."
-          
+          h2.innerText = "You were supposed to enter your name.."
+
 
         } else {
           playerName = nameInput
           startGame()
         }
-
         
     })
 
