@@ -45,7 +45,7 @@ window.addEventListener('load', () => {
         this.height = 60;
         this.x = Math.random() * (canvas.width - this.width);
         this.y = 0 - this.height;
-        this.speed = 1.5
+        this.speed = 4.5
         this.color = '#FF0000';
       }
     
@@ -147,7 +147,7 @@ window.addEventListener('load', () => {
 
         // obstacles 
 
-        if (animationId % 400 === 0) {
+        if (animationId % 200 === 0) {
           addObstacle();
         }
 
@@ -170,6 +170,19 @@ window.addEventListener('load', () => {
 
 
 
+
+
+    const startGame = () => {
+        
+        gameBoard.style.display = 'block'
+        gameStart.style.display = 'none'
+        gameOver.style.display = 'none'
+        gameStatus = true
+
+        animate()
+
+    }
+
     const endGame = () => {
       
       const finalScore = document.querySelector('#gameOver h3')
@@ -185,25 +198,11 @@ window.addEventListener('load', () => {
 
       // reset game variables 
       score = 0
-      playerName = ""
       obstacles = []
       nameInput = ""
       scoreText.innerHTML = "Your Score: " + score
-
       
     }
-
-    const startGame = () => {
-        
-        gameBoard.style.display = 'block'
-        gameStart.style.display = 'none'
-        gameOver.style.display = 'none'
-        gameStatus = true
-
-        animate()
-
-    }
-
 
     const createHighScore = () => {
 
@@ -256,7 +255,6 @@ window.addEventListener('load', () => {
     })
 
 
-
     document.addEventListener('keydown', event => {
     console.log(event)
     if (event.key === 'a' || event.key === 'A' || event.key === 'ArrowLeft') {
@@ -285,8 +283,17 @@ window.addEventListener('load', () => {
       gameBoard.style.display = 'none'
       gameStart.style.display = 'block'
       gameOver.style.display = 'none'
-  })
 
+      // clear initial player name 
+      const startName = document.querySelector('#nameInput #name')
+      startName.value = ""
+      playerName = ""
+    })
+
+    document.getElementById('restart').addEventListener('click', () => {
+      startGame()
+    })
+    
 })
 
 
