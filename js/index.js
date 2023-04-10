@@ -1,12 +1,17 @@
 
 window.addEventListener('load', () => {
 
+
+  // setting constant variables
+
     const gameBoard = document.getElementById("game-board")
     const gameOver = document.getElementById("gameOver")
     const gameStart = document.getElementById('gameStart')
 
     const canvas = document.getElementById('canvas')
     const ctx = canvas.getContext('2d')
+
+    let highScores = []
 
     const rollImg = new Image()
     rollImg.src = '../images/toilet-paper.png'
@@ -18,15 +23,21 @@ window.addEventListener('load', () => {
 
     let playerName = ""
     let score = 0
+    const scoreText = document.getElementById('score')
+
+    console.log(scoreText)
 
     let isMovingLeft = false
     let isMovingRight = false
     let gameStatus = false
+    let animationId = 0
 
     gameBoard.style.display = 'none'
     gameOver.style.display = 'none'
 
-    //  dhdhdhd
+
+
+    //  classes 
 
     class Obstacle {
       constructor() {
@@ -34,7 +45,7 @@ window.addEventListener('load', () => {
         this.height = 60;
         this.x = Math.random() * (canvas.width - this.width);
         this.y = 0 - this.height;
-        this.speed = Math.random() * 2 + 2; // Random speed between 2 and 4 pixels per frame
+        this.speed = 1.5
         this.color = '#FF0000';
       }
     
@@ -46,7 +57,15 @@ window.addEventListener('load', () => {
       update() {
         this.y += this.speed;
       }
+
+      stop() {
+        this.y = this.y;
+        this.speed = 0;
+      }
     }
+
+
+    // obstacles
 
     let obstacles = [];
 
@@ -55,8 +74,6 @@ window.addEventListener('load', () => {
       obstacles.push(obstacle);
     };
 
-
-    setInterval(addObstacle, 2000); // Add a new obstacle every 2 seconds
 
     const drawObstacles = () => {
       obstacles.forEach(obstacle => {
@@ -67,8 +84,38 @@ window.addEventListener('load', () => {
     const updateObstacles = () => {
       obstacles.forEach(obstacle => {
         obstacle.update();
+    
+        // Check for collision with roll
+        if (rollX < obstacle.x + obstacle.width &&
+            rollX + rollWidgth > obstacle.x &&
+            rollY < obstacle.y + obstacle.height &&
+            rollY + rollHeight > obstacle.y) {
+
+              score += 1
+              scoreText.innerHTML = "Your Score: " + score
+
+              obstacle.stop()
+              obstacles.pop(obstacle)
+            
+        }
+
+
+        // check for collision with ground
+
+        if (obstacle.y + obstacle.height >= canvas.height) {
+          console.log("collision detected")
+          obstacle.stop()
+          obstacles.pop(obstacle)
+
+          endGame()
+          
+        }
       });
     };
+
+
+
+    // rolls
 
     const drawRoll = () => {
         ctx.beginPath()
@@ -81,44 +128,113 @@ window.addEventListener('load', () => {
 
 
 
+
+
+
+    // animate screen 
+
     const animate = () => {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         drawRoll()
 
+
         if (isMovingLeft && rollX !== 0) {
-            rollX -= 1.5
+            rollX -= 2.5
         } else if (isMovingRight && rollX != (canvas.width - rollWidgth)) {
-            rollX += 1.5
+            rollX += 2.5
         }
 
+        // obstacles 
+
+        if (animationId % 400 === 0) {
+          addObstacle();
+        }
 
         drawObstacles();
         updateObstacles();
-        
-        requestAnimationFrame(animate)
+
+        console.log(animationId)
+
+        animationId = requestAnimationFrame(animate)
+        console.log(animationId)
+
+        if (gameStatus === false) {
+          cancelAnimationFrame(animationId)
+
+          console.log("Animation Canceled")
+        }
+
+
     }
 
 
 
+    const endGame = () => {
+      
+      const finalScore = document.querySelector('#gameOver h3')
+      finalScore.innerHTML = "Your Score: " + score
 
+      
+      gameBoard.style.display = 'none'
+      gameStart.style.display = 'none'
+      gameOver.style.display = 'block'
+      gameStatus = false
 
+      createHighScore()
 
+      // reset game variables 
+      score = 0
+      playerName = ""
+      obstacles = []
+      nameInput = ""
+      scoreText.innerHTML = "Your Score: " + score
 
-
-
+      
+    }
 
     const startGame = () => {
         
         gameBoard.style.display = 'block'
         gameStart.style.display = 'none'
         gameOver.style.display = 'none'
+        gameStatus = true
 
         animate()
 
-        console.log("test")
-    
     }
+
+
+    const createHighScore = () => {
+
+
+      let ul = document.querySelector(".scoreBoard ul");
+      let lis = ul.querySelectorAll("li");
+
+      let player = {
+        name: playerName,
+        score: score
+      }
+      highScores.push(player)
+
+      highScores.sort(function(a, b) {
+        return b.score - a.score;
+      })
+
+      console.log()
+
+      for (let i = 0; i < 5 && i < highScores.length; i++) {
+        lis[i].textContent = highScores[i].name + ": " + highScores[i].score;
+      }
+
+
+
+    }
+    
+
+
+
+
     
         
     // Event listeners 
@@ -133,6 +249,7 @@ window.addEventListener('load', () => {
 
         } else {
           playerName = nameInput
+          console.log("Name put in at beginning: ", nameInput)
           startGame()
         }
         
@@ -152,7 +269,6 @@ window.addEventListener('load', () => {
     })
 
 
-
     document.addEventListener('keyup', event => {
     console.log(event)
     if (event.key === 'a' || event.key === 'A' || event.key === 'ArrowLeft') {
@@ -163,6 +279,13 @@ window.addEventListener('load', () => {
     }
     console.log({ isMovingLeft, isMovingRight })
     })
+
+
+    document.getElementById('return').addEventListener('click', () => {
+      gameBoard.style.display = 'none'
+      gameStart.style.display = 'block'
+      gameOver.style.display = 'none'
+  })
 
 })
 
