@@ -12,6 +12,8 @@ window.addEventListener('load', () => {
     const ctx = canvas.getContext('2d')
 
     let highScores = []
+    let obstacles = []
+    let rolls = []
 
     const rollImg = new Image()
     rollImg.src = '../images/toilet-paper.png'
@@ -37,7 +39,7 @@ window.addEventListener('load', () => {
 
 
 
-    //  classes 
+    //  obstacle class
 
     class Obstacle {
       constructor() {
@@ -45,7 +47,7 @@ window.addEventListener('load', () => {
         this.height = 60;
         this.x = Math.random() * (canvas.width - this.width);
         this.y = 0 - this.height;
-        this.speed = 4.5
+        this.speed = 3
         this.color = '#FF0000';
       }
     
@@ -59,15 +61,71 @@ window.addEventListener('load', () => {
       }
 
       stop() {
-        this.y = this.y;
         this.speed = 0;
+      }
+
+      
+      delete() {
+        // Find the index of this obstacle in the obstacles array
+        const index = obstacles.indexOf(this);
+        if (index !== -1) {
+          // Remove the obstacle from the obstacles array
+          obstacles.splice(index, 1);
+      }}
+
+    }
+
+
+
+    //  roll class
+
+    class Rolls {
+      constructor() {
+        this.width = 50;
+        this.height = 60;
+        this.x = rollX
+        this.y = rollY
+      }
+    
+      draw() {
+        ctx.beginPath()
+        ctx.drawImage(rollImg, this.x, this.y, this.width, this.height)
+        ctx.fill()
+        ctx.closePath()
+      }
+    
+      update(inputX, inputY) {
+        this.y = inputY;
+        this.x = inputX;
+      }
+
+    }
+
+
+
+    // roll functions
+    const addRolls = () => {
+      const roll = new Rolls();
+      rolls.push(roll)
+    }
+
+    const updateRolls = (inputX, inputY) => {
+      for (let i = rolls.length -1; i > -1; i--) {
+        rolls[i].update(inputX,inputY)
+        break  
       }
     }
 
 
-    // obstacles
+    const drawRolls = () => {
+      rolls.forEach(roll => {
+      roll.draw();
+    })}
 
-    let obstacles = [];
+
+
+
+    // obstacles functions
 
     const addObstacle = () => {
       const obstacle = new Obstacle();
@@ -81,23 +139,42 @@ window.addEventListener('load', () => {
       });
     };
 
+
+
     const updateObstacles = () => {
+
       obstacles.forEach(obstacle => {
         obstacle.update();
-    
-        // Check for collision with roll
-        if (rollX < obstacle.x + obstacle.width &&
-            rollX + rollWidgth > obstacle.x &&
-            rollY < obstacle.y + obstacle.height &&
-            rollY + rollHeight > obstacle.y) {
 
-              score += 1
-              scoreText.innerHTML = "Your Score: " + score
+        if (
+          rollX < obstacle.x + obstacle.width &&
+          rollX + rollHeight > obstacle.x &&
+          rollY < obstacle.y + obstacle.height &&
+          rollHeight + rollY > obstacle.y
+        ) {
 
-              obstacle.stop()
-              obstacles.pop(obstacle)
-            
+
+          addRolls()
+          obstacle.stop()
+          let newRollX = obstacle.x
+          let newRollY = obstacle.y
+
+          obstacle.delete()
+          updateRolls(newRollX,newRollY)
+          
+          score += 1 
+          scoreText.innerHTML = "Your Score: " + score
+          
+          
+      
+
+        } else {
+          //console.log("outside", obstacle)
         }
+
+
+
+      
 
 
         // check for collision with ground
@@ -115,19 +192,6 @@ window.addEventListener('load', () => {
 
 
 
-    // rolls
-
-    const drawRoll = () => {
-        ctx.beginPath()
-        ctx.drawImage(rollImg, rollX, rollY, rollWidgth, rollHeight)
-        ctx.fill()
-        ctx.closePath()
-    }
-
-
-
-
-
 
 
 
@@ -136,7 +200,9 @@ window.addEventListener('load', () => {
     const animate = () => {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height)
-        drawRoll()
+        drawRolls()
+        console.log(rolls)
+        console.log(rolls.length)
 
 
         if (isMovingLeft && rollX !== 0) {
@@ -144,20 +210,23 @@ window.addEventListener('load', () => {
         } else if (isMovingRight && rollX != (canvas.width - rollWidgth)) {
             rollX += 2.5
         }
+//////////////////////////////////////////// adjust the moving iteration with for each in a roll class function
+
 
         // obstacles 
 
-        if (animationId % 200 === 0) {
+        if (animationId % 100 === 0) {
           addObstacle();
         }
 
         drawObstacles();
         updateObstacles();
 
-        console.log(animationId)
 
         animationId = requestAnimationFrame(animate)
-        console.log(animationId)
+        console.log("----------------------------")
+        //console.log(animationId)
+
 
         if (gameStatus === false) {
           cancelAnimationFrame(animationId)
@@ -170,7 +239,7 @@ window.addEventListener('load', () => {
 
 
 
-
+    // basic mechanics
 
     const startGame = () => {
         
@@ -179,6 +248,7 @@ window.addEventListener('load', () => {
         gameOver.style.display = 'none'
         gameStatus = true
 
+        addRolls()
         animate()
 
     }
@@ -193,12 +263,14 @@ window.addEventListener('load', () => {
       gameStart.style.display = 'none'
       gameOver.style.display = 'block'
       gameStatus = false
+      
 
       createHighScore()
 
       // reset game variables 
       score = 0
       obstacles = []
+      rolls = []
       nameInput = ""
       scoreText.innerHTML = "Your Score: " + score
       
@@ -220,8 +292,6 @@ window.addEventListener('load', () => {
         return b.score - a.score;
       })
 
-      console.log()
-
       for (let i = 0; i < 5 && i < highScores.length; i++) {
         lis[i].textContent = highScores[i].name + ": " + highScores[i].score;
       }
@@ -231,10 +301,6 @@ window.addEventListener('load', () => {
     }
     
 
-
-
-
-    
         
     // Event listeners 
 
@@ -254,30 +320,24 @@ window.addEventListener('load', () => {
         
     })
 
-
     document.addEventListener('keydown', event => {
-    console.log(event)
     if (event.key === 'a' || event.key === 'A' || event.key === 'ArrowLeft') {
       isMovingLeft = true
     }
     if (event.key === 'd' || event.key === 'D' || event.key === 'ArrowRight') {
       isMovingRight = true
     }
-    console.log({ isMovingLeft, isMovingRight })
     })
 
-
     document.addEventListener('keyup', event => {
-    console.log(event)
     if (event.key === 'a' || event.key === 'A' || event.key === 'ArrowLeft') {
       isMovingLeft = false
     }
     if (event.key === 'd' || event.key === 'D' || event.key === 'ArrowRight') {
       isMovingRight = false
     }
-    console.log({ isMovingLeft, isMovingRight })
-    })
 
+    })
 
     document.getElementById('return').addEventListener('click', () => {
       gameBoard.style.display = 'none'
