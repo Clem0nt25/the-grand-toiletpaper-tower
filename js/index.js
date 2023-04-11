@@ -47,7 +47,7 @@ window.addEventListener('load', () => {
         this.height = 60;
         this.x = Math.random() * (canvas.width - this.width);
         this.y = 0 - this.height;
-        this.speed = 3
+        this.speed = 2
         this.color = '#FF0000';
       }
     
@@ -93,6 +93,7 @@ window.addEventListener('load', () => {
         ctx.fill()
         ctx.closePath()
       }
+
     
       update(inputX, inputY) {
         this.y = inputY;
@@ -114,6 +115,21 @@ window.addEventListener('load', () => {
         rolls[i].update(inputX,inputY)
         break  
       }
+    }
+
+    const moveRolls = (movingLeft, movingRight) => {
+
+      if (isMovingRight) {
+        rolls.forEach(roll => {
+          roll["x"] += 2.5})
+      } 
+
+      if (isMovingLeft) {
+        rolls.forEach(roll => {
+          roll["x"] -= 2.5})
+      }
+
+      
     }
 
 
@@ -144,7 +160,14 @@ window.addEventListener('load', () => {
     const updateObstacles = () => {
 
       obstacles.forEach(obstacle => {
+
+        // find the last roll
+        const lastRoll = rolls[rolls.length - 1];
+        rollX = lastRoll.x
+        rollY = lastRoll.y
         obstacle.update();
+
+
 
         if (
           rollX < obstacle.x + obstacle.width &&
@@ -165,7 +188,14 @@ window.addEventListener('load', () => {
           score += 1 
           scoreText.innerHTML = "Your Score: " + score
           
-          
+          if(rolls.length > 3) {
+            rolls.shift()
+            rolls.forEach(roll => {
+              console.log(roll.y)
+              roll.y += 55
+              console.log(roll.y)
+            })
+          }
       
 
         } else {
@@ -205,17 +235,12 @@ window.addEventListener('load', () => {
         console.log(rolls.length)
 
 
-        if (isMovingLeft && rollX !== 0) {
-            rollX -= 2.5
-        } else if (isMovingRight && rollX != (canvas.width - rollWidgth)) {
-            rollX += 2.5
-        }
-//////////////////////////////////////////// adjust the moving iteration with for each in a roll class function
 
+        moveRolls(isMovingLeft, isMovingRight)
 
         // obstacles 
 
-        if (animationId % 100 === 0) {
+        if (animationId % 200 === 0) {
           addObstacle();
         }
 
@@ -273,6 +298,8 @@ window.addEventListener('load', () => {
       rolls = []
       nameInput = ""
       scoreText.innerHTML = "Your Score: " + score
+      rollX = canvas.width / 2 - rollWidgth / 2
+      rollY = canvas.height - rollHeight + 10
       
     }
 
