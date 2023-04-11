@@ -1,9 +1,14 @@
+@import url('https://fonts.cdnfonts.com/css/8bit-wonder');
+
+
+
 body {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: gray;
+    background-color: white;
+    font-family: '8BIT WONDER', sans-serif;
 }
 
 

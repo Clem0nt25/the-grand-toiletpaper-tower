@@ -192,7 +192,7 @@ window.addEventListener('load', () => {
             rolls.shift()
             rolls.forEach(roll => {
               console.log(roll.y)
-              roll.y += 55
+              roll.y += 58
               console.log(roll.y)
             })
           }
