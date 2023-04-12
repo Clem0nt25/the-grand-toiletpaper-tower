@@ -319,7 +319,7 @@ window.addEventListener('load', () => {
       
       gameBoard.style.display = 'none'
       gameStart.style.display = 'none'
-      gameOver.style.display = 'block'
+      gameOver.style.display = 'flex'
       gameStatus = false
       
 
@@ -403,7 +403,7 @@ window.addEventListener('load', () => {
 
     document.getElementById('return').addEventListener('click', () => {
       gameBoard.style.display = 'none'
-      gameStart.style.display = 'block'
+      gameStart.style.display = 'flex'
       gameOver.style.display = 'none'
 
       // clear initial player name 
