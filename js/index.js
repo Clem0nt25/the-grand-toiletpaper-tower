@@ -16,10 +16,10 @@ window.addEventListener('load', () => {
     let rolls = []
 
     const rollImg = new Image()
-    rollImg.src = '/images/toilet-paper.png'
+    rollImg.src = 'images/toilet-paper.png'
 
     const bG = new Image()
-    bG.src = '/images/background.png'
+    bG.src = 'images/background.png'
 
     let rollHeight = 60
     let rollWidgth = 50
