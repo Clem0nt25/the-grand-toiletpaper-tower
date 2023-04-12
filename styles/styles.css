@@ -63,6 +63,146 @@ h1 {
     -webkit-text-stroke-width: 2.00px; 
 }
 
+#nameInput form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+
+#start-button {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0px;
+    text-shadow: 2px 2px 0px #000000;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 20px;
+    background: #2456b3;
+    padding: 10px 20px 10px 20px;
+    border: solid #000000 3px;
+    text-decoration: none;
+    font-family: '8BIT WONDER', sans-serif;
+    margin-left: 20px;
+}
+
+#name {
+    height: 45px;
+    width: 300px;
+    border: 2px solid black;
+}
+
+label {
+    font-size: 20px;
+    margin-right: 20px;
+}
+
+ol {
+    list-style: none;
+    counter-reset: my-awesome-counter;
+    padding-left: 0px;
+
+  }
+  ol li {
+    counter-increment: my-awesome-counter;
+    margin: 20px 0;
+  }
+  ol li::before {
+    content: counter(my-awesome-counter) ". ";
+    color: black;
+    font-weight: bold;
+}
+
+#nameInput h2 {
+    width: 100%;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    border: 1px solid black;
+    justify-content: center;
+    padding: 10px 10px 10px 10px;
+    color: white;
+    background-color: black;
+    -webkit-text-fill-color: black;
+    -webkit-text-stroke-color: white;
+    -webkit-text-stroke-width: 2.00px; 
+}
+
+
+#gameOver {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#gameOver h2 {
+    width: 100%;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    border: 1px solid black;
+    justify-content: center;
+    padding: 10px 10px 10px 10px;
+    color: white;
+    background-color: black;
+    -webkit-text-fill-color: black;
+    -webkit-text-stroke-color: red;
+    -webkit-text-stroke-width: 2.00px;
+}
+
+#gameOver h3 {
+    width: 60%%;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    border: 1px solid black;
+    justify-content: center;
+    padding: 10px 10px 10px 10px;
+    color: white;
+    background-color: black;
+    -webkit-text-fill-color: black;
+    -webkit-text-stroke-color: white;
+    -webkit-text-stroke-width: 2.00px;
+}
+
+
+
+
+#restart {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0px;
+    text-shadow: 2px 2px 0px #000000;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 20px;
+    background: #2456b3;
+    padding: 10px 20px 10px 20px;
+    border: solid #000000 3px;
+    text-decoration: none;
+    font-family: '8BIT WONDER', sans-serif;
+    margin-left: 20px;
+}
+
+
+#return {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0px;
+    text-shadow: 2px 2px 0px #000000;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 20px;
+    background: #2456b3;
+    padding: 10px 20px 10px 20px;
+    border: solid #000000 3px;
+    text-decoration: none;
+    font-family: '8BIT WONDER', sans-serif;
+    margin-left: 20px;
+}
 
 
 
