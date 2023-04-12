@@ -16,12 +16,17 @@ window.addEventListener('load', () => {
     let rolls = []
 
     const rollImg = new Image()
-    rollImg.src = '../images/toilet-paper.png'
+    rollImg.src = '/images/toilet-paper.png'
+
+    const bG = new Image()
+    bG.src = '/images/background.png'
 
     let rollHeight = 60
     let rollWidgth = 50
     let rollX = canvas.width / 2 - rollWidgth / 2
     let rollY = canvas.height - rollHeight + 10
+    let rollSpeed = 2.5
+    let obsSpeed = 2
 
     let playerName = ""
     let score = 0
@@ -47,17 +52,21 @@ window.addEventListener('load', () => {
         this.height = 60;
         this.x = Math.random() * (canvas.width - this.width);
         this.y = 0 - this.height;
-        this.speed = 2
+        this.speed = obsSpeed
         this.color = '#FF0000';
       }
     
       draw() {
         ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.drawImage(rollImg, this.x, this.y, this.width, this.height);
       }
     
       update() {
         this.y += this.speed;
+      }
+
+      increaseObsSpeed(gameSpeed) {
+        this.speed = obsSpeed + (gameSpeed * 0.1)
       }
 
       stop() {
@@ -100,6 +109,8 @@ window.addEventListener('load', () => {
         this.x = inputX;
       }
 
+      
+
     }
 
 
@@ -121,12 +132,12 @@ window.addEventListener('load', () => {
 
       if (isMovingRight) {
         rolls.forEach(roll => {
-          roll["x"] += 2.5})
+          roll["x"] += rollSpeed})
       } 
 
       if (isMovingLeft) {
         rolls.forEach(roll => {
-          roll["x"] -= 2.5})
+          roll["x"] -= rollSpeed})
       }
 
       
@@ -181,6 +192,8 @@ window.addEventListener('load', () => {
           obstacle.stop()
           let newRollX = obstacle.x
           let newRollY = obstacle.y
+          
+
 
           obstacle.delete()
           updateRolls(newRollX,newRollY)
@@ -221,6 +234,24 @@ window.addEventListener('load', () => {
     };
 
 
+    const drawBg = () => {
+      ctx.beginPath()
+      ctx.drawImage(bG, 0, 0, 500, 600)
+      ctx.fill()
+      ctx.closePath()
+
+    }
+
+
+    const increaseCounter = (score) => {
+      const gameSpeed = Math.floor(score / 5)
+
+      obstacles.forEach(obstacle => {
+        obstacle.increaseObsSpeed(score)
+      })
+    }
+
+
 
 
 
@@ -230,6 +261,7 @@ window.addEventListener('load', () => {
     const animate = () => {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height)
+        drawBg()
         drawRolls()
         console.log(rolls)
         console.log(rolls.length)
@@ -246,6 +278,7 @@ window.addEventListener('load', () => {
 
         drawObstacles();
         updateObstacles();
+        increaseCounter(score);
 
 
         animationId = requestAnimationFrame(animate)
@@ -300,13 +333,15 @@ window.addEventListener('load', () => {
       scoreText.innerHTML = "Your Score: " + score
       rollX = canvas.width / 2 - rollWidgth / 2
       rollY = canvas.height - rollHeight + 10
+      rollSpeed = 2.5
+      obsSpeed = 2
       
     }
 
     const createHighScore = () => {
 
 
-      let ul = document.querySelector(".scoreBoard ul");
+      let ul = document.querySelector(".scoreBoard ol");
       let lis = ul.querySelectorAll("li");
 
       let player = {

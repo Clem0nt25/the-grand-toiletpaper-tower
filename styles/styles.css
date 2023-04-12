@@ -9,12 +9,15 @@ body {
     align-items: center;
     background-color: white;
     font-family: '8BIT WONDER', sans-serif;
+    width: 1000px;
+    padding: 100px 100px 100px 100px;
 }
 
-
-#canvas {
-    border: 1px solid black;
-
+#gameStart {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .textBoxes {
@@ -23,3 +26,43 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.textBoxes div {
+    width: 50%;
+    height: 300px;
+    border: 1px solid black;
+    padding: 20px 20px 20px 20px;
+}
+
+.text {
+    line-height: 22.5px;
+}
+
+.scoreBoard li {
+    list-style-type: none;
+}
+
+
+#canvas {
+    border: 1px solid black;
+
+}
+
+h1 {
+    width: 70%;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    border: 1px solid black;
+    justify-content: center;
+    padding: 10px 10px 10px 10px;
+    color: white;
+    background-color: black;
+    -webkit-text-fill-color: black;
+    -webkit-text-stroke-color: yellow;
+    -webkit-text-stroke-width: 2.00px; 
+}
+
+
+
+
